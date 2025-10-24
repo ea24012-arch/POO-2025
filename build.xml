@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PapeleriaManager" default="run" basedir=".">
+    <description>
+        Proyecto Ant generado manualmente para gestionar productos de una papelería.
+    </description>
+
+    <property name="src.dir" location="src/main/java"/>
+    <property name="build.dir" location="build"/>
+    <property name="classes.dir" location="${build.dir}/classes"/>
+    <property name="dist.dir" location="dist"/>
+    <property name="main.class" value="com.exam.papeleria.Main"/>
+    <property name="application.title" value="GestorPapeleria"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="prepare">
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="prepare">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true">
+            <include name="**/*.java"/>
+        </javac>
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}" excludes="**/*.java"/>
+        </copy>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/${application.title}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${dist.dir}/${application.title}.jar" fork="true"/>
+    </target>
+</project>
